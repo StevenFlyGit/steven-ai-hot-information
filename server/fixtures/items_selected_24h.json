@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 1,
+  "query": {
+    "mode": "selected",
+    "category": null,
+    "window": "24h",
+    "q": null,
+    "by": "timeline",
+    "ordering": "timelineDesc"
+  },
+  "items": [
+    {
+      "id": "cmsykcnkt0yh1roz0a9h404r5",
+      "title": "OpenAI 推出 ChatGPT for Teens：面向青少年的学习体验与更强安全保护",
+      "originalTitle": "Introducing ChatGPT for Teens： Built for learning， backed by protections",
+      "summary": "OpenAI 发布 ChatGPT for Teens，为 13-17 岁用户自动启用，内置更强安全保护与家长控制。新增 Study Mode、负责任作业提醒、测验与学习可视化，以及可设定默认开启时段的 Study Hours，引导青少年分步解题而非直接给答案。OpenAI 同时宣布与 CodeAI 合作，帮助青少年理解、质疑并创造性地使用 AI。",
+      "source": {
+        "name": "OpenAI：官网动态（RSS · 排除企业/客户案例）"
+      },
+      "links": {
+        "aihot": "https://aihot.virxact.com/items/cmsykcnkt0yh1roz0a9h404r5",
+        "original": "https://openai.com/index/chatgpt-for-teens"
+      },
+      "publishedAt": "2026-08-18T11:00:00.000Z",
+      "discoveredAt": "2026-08-18T11:12:25.733Z",
+      "category": "ai-products",
+      "score": 60,
+      "selected": true,
+      "reason": "与通用 ChatGPT 相比，青少年版把安全护栏和学习引导设为默认，家长和教师面对的不再是是否允许使用，而是如何设置边界与解释 AI 角色。",
+      "attribution": {
+        "name": "AIHOT",
+        "url": "https://aihot.virxact.com/items/cmsykcnkt0yh1roz0a9h404r5"
+      }
+    },
+    {
+      "id": "cmsycmgww0rkrroz0nfma0z05",
+      "title": "设计 AI 评测：先求清晰，再谈可视化",
+      "originalTitle": "Designing AI Evals： Clarity Now and Visualization Next",
+      "summary": "本文演示如何用开源评测框架 Inspect AI 和 Harbor 评估 agent 技能，并借助 Google Sheets 和 Data Studio 进行可视化分析。",
+      "source": {
+        "name": "Google AI：DEV 作者专属（RSS）"
+      },
+      "links": {
+        "aihot": "https://aihot.virxact.com/items/cmsycmgww0rkrroz0nfma0z05",
+        "original": "https://dev.to/googleai/designing-ai-evals-clarity-now-and-visualization-next-4eii"
+      },
+      "publishedAt": "2026-08-18T07:00:00.000Z",
+      "discoveredAt": "2026-08-18T07:36:07.408Z",
+      "category": "tip",
+      "score": 67,
+      "selected": true,
+      "reason": "把技能评估拆成模型基线、技能条件与多维事实打分，让团队用同一套脚本量化技能增量，而不是凭单次演示做判断。",
+      "attribution": {
+        "name": "AIHOT",
+        "url": "https://aihot.virxact.com/items/cmsycmgww0rkrroz0nfma0z05"
+      }
+    },
+    {
+      "id": "cmsy8afig0mvmroz0gb3hz0iq",
+      "title": "inclusionAI 开源 ConceptEdit：基于概念缩放与密集监督的图像编辑数据生成管线",
+      "originalTitle": "inclusionAI/ConceptEdit",
+      "summary": "蚂蚁集团 inclusionAI 开源 ConceptEdit，一个基于概念缩放与密集监督的图像编辑数据生成管线。该管线通过三阶段流程（VLM 生成指令、FLUX 执行编辑、VQA 评估筛选）构建大规模、基于分类法的图像编辑数据集，并提供单概念与多概念两种变体。项目采用 MIT 许可证，支持断点续跑，需 OpenAI 兼容 VLM 端点与本地 FLUX 检查点。",
+      "source": {
+        "name": "蚂蚁 inclusionAI：GitHub 新仓库"
+      },
+      "links": {
+        "aihot": "https://aihot.virxact.com/items/cmsy8afig0mvmroz0gb3hz0iq",
+        "original": "https://github.com/inclusionAI/ConceptEdit"
+      },
+      "publishedAt": "2026-08-17T07:22:08.000Z",
+      "discoveredAt": "2026-08-18T05:34:47.114Z",
+      "category": "ai-products",
+      "score": 64,
+      "selected": true,
+      "reason": "流水线把图像编辑数据生成拆为指令生成、FLUX 编辑、VLM 评判三步，多概念版本将多个并行编辑合并为一条指令并支持断点续跑，为构建带质检的编辑训练数据提供可复用框架。",
+      "attribution": {
+        "name": "AIHOT",
+        "url": "https://aihot.virxact.com/items/cmsy8afig0mvmroz0gb3hz0iq"
+      }
+    },
+    {
+      "id": "cmsxwd7a40coxroz06g25sfaf",
+      "title": "一个实用的深度思考Prompt：用\"双向钢人论证\"让AI帮你挖出最本质的答案",
+      "originalTitle": "一个极度实用的深度思考Prompt，帮你挖出最本质的答案。",
+      "summary": "作者基于Reddit上\"让Claude真正开始思考\"的帖子，引入逻辑学中的\"钢人论证\"（steelman）概念，并自创了一个\"双向钢人Prompt\"。该Prompt通过重述真实问题、强化正反双方观点、找出关键变量、逼AI给出明确判断四步，旨在避免模型谄媚，帮助用户找到问题最本质的答案。作者以自己选择公司司庆日的真实案例演示了使用效果。",
+      "source": {
+        "name": "公众号：数字生命卡兹克"
+      },
+      "links": {
+        "aihot": "https://aihot.virxact.com/items/cmsxwd7a40coxroz06g25sfaf",
+        "original": "https://mp.weixin.qq.com/s?__biz=MzIyMzA5NjEyMA%3D%3D&mid=2647685329&idx=1&sn=9471278dc489641c097b228912965ed4"
+      },
+      "publishedAt": "2026-08-17T23:58:00.000Z",
+      "discoveredAt": "2026-08-18T00:01:01.853Z",
+      "category": "tip",
+      "score": 71,
+      "selected": true,
+      "reason": "这个 Prompt 把钢人论证做成可复制步骤，先重述问题、强化正反观点、再定位决定结论的变量，比直接要建议更能绕过模型顺意回答。",
+      "attribution": {
+        "name": "AIHOT",
+        "url": "https://aihot.virxact.com/items/cmsxwd7a40coxroz06g25sfaf"
+      }
+    },
+    {
+      "id": "cmsxv0p3v0bntroz0227a6b3j",
+      "title": "用 Google 的 Agent Development Kit 构建零信任 AI 智能体",
+      "originalTitle": "Build zero-trust AI agents with Google's Agent Development Kit",
+      "summary": "Google 开源了基于 ADK 和 Gemini 的零信任客服与退货智能体示例，演示如何防御提示注入等攻击。该架构在 LLM 上下文之外通过三层硬性安全机制保障：硬件支持的加密签名确保数据库写入不可抵赖、gVisor 沙箱隔离动态代码执行、确定性语义网关校验业务逻辑。系统提示词只是软约束，无法作为安全边界。",
+      "source": {
+        "name": "Google Developers Blog（RSS）"
+      },
+      "links": {
+        "aihot": "https://aihot.virxact.com/items/cmsxv0p3v0bntroz0227a6b3j",
+        "original": "https://developers.googleblog.com/build-zero-trust-ai-agents-with-googles-agent-development-kit"
+      },
+      "publishedAt": "2026-08-17T23:22:25.902Z",
+      "discoveredAt": "2026-08-17T23:22:25.902Z",
+      "category": "tip",
+      "score": 69,
+      "selected": true,
+      "reason": "零信任代理被拆成签名写库、gVisor隔离执行和确定性网关三层，可作为在不可信输入下仍保持硬性业务边界的工程模板。",
+      "attribution": {
+        "name": "AIHOT",
+        "url": "https://aihot.virxact.com/items/cmsxv0p3v0bntroz0227a6b3j"
+      }
+    },
+    {
+      "id": "cmsxsvb5s0a4troz0z2q2nu3h",
+      "title": "Cursor 推出 Origin 代码托管服务，作为 GitHub 的替代方案",
+      "originalTitle": "Cursor 推出 Origin，作为 GitHub 的替代方案",
+      "summary": "Cursor 今日起向所有付费计划用户开放 Origin 代码托管的早期测试版，提供仓库、拉取请求、代码浏览及 GitHub 同步功能。用户可创建以 cursor.com/codebase/ 为前缀的仓库，或将 GitHub 仓库同步至 Origin，双向同步评论与审查。Vercel、Depot 和 Buildkite 集成已可用，智能体功能即将推出。",
+      "source": {
+        "name": "Hacker News 热门（buzzing.cc 中文翻译）"
+      },
+      "links": {
+        "aihot": "https://aihot.virxact.com/items/cmsxsvb5s0a4troz0z2q2nu3h",
+        "original": "https://cursor.com/changelog/origin-code-hosting"
+      },
+      "publishedAt": "2026-08-17T22:14:00.748Z",
+      "discoveredAt": "2026-08-17T22:23:07.832Z",
+      "category": "ai-products",
+      "score": 81,
+      "selected": true,
+      "reason": "与外部 GitHub 托管相比，Origin 把源码、PR 和 agent 放进同一环境，免去跨工具切换，影响已用 Cursor 做开发的团队对代码审查与 CI 集成的组织方式。",
+      "attribution": {
+        "name": "AIHOT",
+        "url": "https://aihot.virxact.com/items/cmsxsvb5s0a4troz0z2q2nu3h"
+      }
+    }
+  ],
+  "page": {
+    "count": 6,
+    "hasMore": true,
+    "nextCursor": "eyJrIjoiaXRlbXMiLCJ2IjoyLCJhIjoxNzg3MDA1Mzg3ODMyLCJpIjoiY21zeHN2YjVzMGE0dHJvejB6MnEybnUzaCIsImMiOiI5dVZGMFFBbktrV01mOUlSdGZvdU02In0"
+  }
+}

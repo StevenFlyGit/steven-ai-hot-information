@@ -1,0 +1,11 @@
+# 依赖说明
+# ----------
+# 本代理使用 Python 标准库（http.server + urllib）实现，零三方依赖。
+# 运行环境要求：Python 3.8+（已在 3.11 验证）。
+#
+# 若未来希望替换为 FastAPI 等框架，可在此补充对应依赖；当前实现无需安装任何包。
+#
+# 运行：
+#   python server/server.py
+# 或自定义端口：
+#   PORT=8080 python server/server.py

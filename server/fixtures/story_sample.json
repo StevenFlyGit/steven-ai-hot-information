@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "story": {
+    "publicId": "fdc2b29b-0377-40f1-a044-5c1a667d18fd",
+    "title": "OpenAI 与 SB Energy、NVIDIA 及美国能源部达成协议参与 PORTS-Pike 项目",
+    "status": "active",
+    "sourceCount": 5,
+    "reportCount": 5,
+    "firstReportAt": "2026-08-17T13:11:44.722Z",
+    "latestAt": "2026-08-17T15:23:52.125Z",
+    "latest": "NVIDIA 为项目提供最高 1050 亿美元担保并成为独家芯片供应商。",
+    "digest": "OpenAI 与 SB Energy、NVIDIA 及美国能源部达成协议，在俄亥俄州派克县 PORTS-Pike 科技园区获取约 8 吉瓦电力容量。项目预计在 2032 年前六年建设期内创造 35,000 个建筑岗位和 2,500 个长期运营岗位。\nNVIDIA 与 SB Energy 合作锁定该园区电力容量，以独家部署 NVIDIA 算力，OpenAI 将成为租户。NVIDIA 将投资 15 亿美元并提供信贷支持，通过担保园区残值（潜在支付高达 1050 亿美元）降低 SB Energy 融资成本，以拉动自身芯片销售。\nOpenAI 与 SB Energy 签署 20 年租约，获得约 8 吉瓦 IT 容量，NVIDIA 为项目提供最高 1050 亿美元担保并成为独家芯片供应商。首期 800MW 预计 2028 年投运，项目还需新建 9.2GW 燃气发电和 42 亿美元电网升级。NVIDIA CEO 黄仁勋称土地、电力和建筑外壳已成 AI 建设最大瓶颈。",
+    "digestUpdatedAt": "2026-08-17T15:39:31.411Z",
+    "links": {
+      "aihot": "https://aihot.virxact.com/story/fdc2b29b-0377-40f1-a044-5c1a667d18fd"
+    },
+    "reports": [
+      {
+        "id": "cmsxdw6m901loroi2h3e3yudu",
+        "title": "OpenAI 与 SB Energy 达成协议，在俄亥俄州锁定约 8GW AI 算力容量",
+        "summary": "OpenAI 与 SB Energy 达成协议，在俄亥俄州获取约 8GW AI 算力容量，为其最大基础设施承诺之一。SB Energy 将建设并运营 PORTS-Pike 数据中心，20 年租约，园区独家部署 NVIDIA 算力，首批 800MW 预计 2028 年投运，2032 年全部建成。",
+        "source": {
+          "name": "X：Kim (@kimmonismus)",
+          "firstParty": false
+        },
+        "publishedAt": "2026-08-17T15:23:52.125Z",
+        "links": {
+          "aihot": "https://aihot.virxact.com/items/cmsxdw6m901loroi2h3e3yudu",
+          "original": "https://x.com/kimmonismus/status/2089371190276092299"
+        }
+      },
+      {
+        "id": "cmsxbrft40478robn8pxoq793",
+        "title": "OpenAI 与软银签俄亥俄数据中心租约，Nvidia 最高担保 1050 亿美元",
+        "summary": "OpenAI 与软银旗下 SB Energy 签署 20 年租约，获得俄亥俄州园区约 8 吉瓦 IT 容量，Nvidia 为项目提供最高 1050 亿美元担保并成为独家芯片供应商。Nvidia CEO 黄仁勋称土地、电力和建筑外壳已成 AI 建设最大瓶颈。据《华尔街日报》分析，九家科技公司持有约 3 万亿美元未计入资产负债表的 AI 相关承诺。",
+        "source": {
+          "name": "The Decoder：AI News（RSS）",
+          "firstParty": false
+        },
+        "publishedAt": "2026-08-17T14:24:12.446Z",
+        "links": {
+          "aihot": "https://aihot.virxact.com/items/cmsxbrft40478robn8pxoq793",
+          "original": "https://the-decoder.com/openai-signs-record-ohio-data-center-lease-with-nvidia-backing-up-to-105-billion"
+        }
+      },
+      {
+        "id": "cmsxaoijy0313robnc7inkyy5",
+        "title": "OpenAI 获英伟达支持签 8GW 俄亥俄数据中心租约",
+        "summary": "OpenAI 与 SB Energy 签署俄亥俄州 8GW 数据中心租约，英伟达将投资 15 亿美元并提供信贷支持，该园区将独家部署英伟达 AI 算力。首期 800MW 预计 2028 年投运，项目还需新建 9.2GW 燃气发电和 42 亿美元电网升级。英伟达通过担保园区残值（潜在支付高达 1050 亿美元）降低 SB Energy 融资成本，以拉动自身芯片销售。",
+        "source": {
+          "name": "X：Rohan Paul (@rohanpaul_ai)",
+          "firstParty": false
+        },
+        "publishedAt": "2026-08-17T13:53:56.934Z",
+        "links": {
+          "aihot": "https://aihot.virxact.com/items/cmsxaoijy0313robnc7inkyy5",
+          "original": "https://x.com/rohanpaul_ai/status/2089346221890765252"
+        }
+      },
+      {
+        "id": "cmsx9jvre05y6romms3bo1umb",
+        "title": "NVIDIA 与 SB Energy 合作锁定俄亥俄州 PORTS-Pike 园区电力容量，OpenAI 将入驻",
+        "summary": "NVIDIA 宣布与 SB Energy 合作，锁定俄亥俄州 PORTS-Pike 科技园区的电力容量（LPS）以独家部署 NVIDIA 算力，OpenAI 将成为租户。",
+        "source": {
+          "name": "NVIDIA Blog（RSS）",
+          "firstParty": true
+        },
+        "publishedAt": "2026-08-17T13:22:19.094Z",
+        "links": {
+          "aihot": "https://aihot.virxact.com/items/cmsx9jvre05y6romms3bo1umb",
+          "original": "https://blogs.nvidia.com/blog/securing-the-infrastructure-of-intelligence"
+        }
+      },
+      {
+        "id": "cmsx9696t05u8rommnqblpsgt",
+        "title": "OpenAI 加入 PORTS-Pike 项目",
+        "summary": "OpenAI 与 SB Energy、NVIDIA 及美国能源部达成协议，在俄亥俄州派克县 PORTS-Pike 科技园区获取约 8 吉瓦电力容量。项目预计在 2032 年前六年建设期内创造 35,000 个建筑岗位和 2,500 个长期运营岗位。",
+        "source": {
+          "name": "OpenAI：官网动态（RSS · 排除企业/客户案例）",
+          "firstParty": true
+        },
+        "publishedAt": "2026-08-17T13:11:44.722Z",
+        "links": {
+          "aihot": "https://aihot.virxact.com/items/cmsx9696t05u8rommnqblpsgt",
+          "original": "https://openai.com/index/openai-joins-ports-pike-project"
+        }
+      }
+    ],
+    "storyline": [
+      {
+        "publicId": "54f91cf1-3498-4e05-aa2b-4c93972efe0e",
+        "title": "NVIDIA 与 SB Energy 合作锁定 PORTS-Pike 园区电力容量",
+        "relation": "同一故事线",
+        "links": {
+          "aihot": "https://aihot.virxact.com/story/54f91cf1-3498-4e05-aa2b-4c93972efe0e",
+          "api": "https://aihot.virxact.com/api/v1/stories/54f91cf1-3498-4e05-aa2b-4c93972efe0e"
+        }
+      },
+      {
+        "publicId": "c978164a-7d92-4b3a-b458-1788eb96f25a",
+        "title": "NVIDIA partners with SB Energy for PORTS-Pike site",
+        "relation": "同一故事线",
+        "links": {
+          "aihot": "https://aihot.virxact.com/story/c978164a-7d92-4b3a-b458-1788eb96f25a",
+          "api": "https://aihot.virxact.com/api/v1/stories/c978164a-7d92-4b3a-b458-1788eb96f25a"
+        }
+      }
+    ],
+    "related": []
+  }
+}

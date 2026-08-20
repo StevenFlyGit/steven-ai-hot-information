@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "count": 4,
+  "items": [
+    {
+      "rank": 1,
+      "id": "cmsx9jvre05y6romms3bo1umb",
+      "title": "NVIDIA 与 SB Energy 合作锁定俄亥俄州 PORTS-Pike 园区电力容量，OpenAI 将入驻",
+      "source": {
+        "name": "NVIDIA Blog（RSS）"
+      },
+      "links": {
+        "aihot": "https://aihot.virxact.com/items/cmsx9jvre05y6romms3bo1umb",
+        "original": "https://blogs.nvidia.com/blog/securing-the-infrastructure-of-intelligence",
+        "story": "https://aihot.virxact.com/story/fdc2b29b-0377-40f1-a044-5c1a667d18fd"
+      },
+      "sourceCount": 6,
+      "signalCount": 0,
+      "sourceNames": [
+        "OpenAI：官网动态（RSS · 排除企业/客户案例）",
+        "NVIDIA Blog（RSS）",
+        "X：Rohan Paul (@rohanpaul_ai)",
+        "IT之家（RSS）",
+        "The Decoder：AI News（RSS）",
+        "X：Kim (@kimmonismus)"
+      ],
+      "latestAt": "2026-08-18T00:22:25.999Z"
+    },
+    {
+      "rank": 2,
+      "id": "cmsxld6es03o8roz0jblf3ii9",
+      "title": "404 Media 追踪珍本图书流向：亚马逊批量购书扫描用于 AI 训练后销毁",
+      "source": {
+        "name": "Hacker News 热门（buzzing.cc 中文翻译）"
+      },
+      "links": {
+        "aihot": "https://aihot.virxact.com/items/cmsxld6es03o8roz0jblf3ii9",
+        "original": "https://www.404media.co/we-tracked-a-shipment-of-rare-books-it-ended-at-an-amazon-ai-training-facility",
+        "story": "https://aihot.virxact.com/story/c1ee9c7d-7701-4167-9d8a-e378568c4960"
+      },
+      "sourceCount": 4,
+      "signalCount": 0,
+      "sourceNames": [
+        "IT之家（RSS）",
+        "TechCrunch：AI（RSS）",
+        "Ars Technica：AI（RSS）",
+        "Hacker News 热门（buzzing.cc 中文翻译）"
+      ],
+      "latestAt": "2026-08-17T20:53:05.960Z"
+    },
+    {
+      "rank": 3,
+      "id": "cmsxsvb5s0a4troz0z2q2nu3h",
+      "title": "Cursor 推出 Origin 代码托管服务，作为 GitHub 的替代方案",
+      "source": {
+        "name": "Hacker News 热门（buzzing.cc 中文翻译）"
+      },
+      "links": {
+        "aihot": "https://aihot.virxact.com/items/cmsxsvb5s0a4troz0z2q2nu3h",
+        "original": "https://cursor.com/changelog/origin-code-hosting",
+        "story": "https://aihot.virxact.com/story/a0b46a26-95de-4cae-b75e-54c1f123937c"
+      },
+      "sourceCount": 2,
+      "signalCount": 2,
+      "sourceNames": [
+        "X：Eric Zakariasson (@ericzakariasson)",
+        "Hacker News 热门（buzzing.cc 中文翻译）"
+      ],
+      "latestAt": "2026-08-17T22:23:07.832Z"
+    },
+    {
+      "rank": 4,
+      "id": "cmsx9jy2a05yerommy1e0jc6t",
+      "title": "A 股迎来“人形机器人第一股”，宇树科技官宣 8 月 19 日科创板上市",
+      "source": {
+        "name": "IT之家（RSS）"
+      },
+      "links": {
+        "aihot": "https://aihot.virxact.com/items/cmsx9jy2a05yerommy1e0jc6t",
+        "original": "https://www.ithome.com/0/990/812.htm",
+        "story": "https://aihot.virxact.com/story/1a6febe1-053d-4dab-ad21-d1ab648da020"
+      },
+      "sourceCount": 1,
+      "signalCount": 2,
+      "sourceNames": [
+        "IT之家（RSS）"
+      ],
+      "latestAt": "2026-08-17T13:22:19.094Z"
+    }
+  ]
+}

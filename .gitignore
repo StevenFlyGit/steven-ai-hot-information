@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# 环境变量 / 密钥（勿提交）
+.env
+.env.local
+*.local
+
+# 本地缓存 / 日志
+*.log
+server/.cache/
+
+# 编辑器 / 系统
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# 依赖锁（本代理零三方依赖，保留 requirements.txt 仅作说明）
+node_modules/

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI·HOT 资讯 · 高保真原型（数据仪表盘风）</title>
+<style>
+  :root{
+    --bg:#0F1419; --panel:#161D26; --panel2:#1B2430; --ink:#E8EDF2; --ink2:#9AA7B4; --ink3:#5C6B7A;
+    --amber:#F5A623; --blue:#3B82F6; --red:#EF4444; --green:#22C55E; --line:#26313D; --r:8px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Inter","JetBrains Mono","PingFang SC",sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;font-size:14px}
+  .mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+  .protobadge{position:fixed;top:14px;right:14px;z-index:50;font-size:11px;padding:6px 12px;border-radius:999px;background:rgba(22,29,38,.85);border:1px solid var(--line);color:var(--ink2)}
+  .app{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
+  /* RAIL */
+  .rail{background:var(--panel);border-right:1px solid var(--line);padding:20px 14px;position:sticky;top:0;height:100vh}
+  .brand{font-weight:800;font-size:17px;color:var(--amber);letter-spacing:1px;margin-bottom:22px;display:flex;align-items:center;gap:8px}
+  .brand .sq{width:18px;height:18px;background:linear-gradient(135deg,var(--amber),var(--blue));border-radius:5px}
+  .rail a{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;color:var(--ink2);text-decoration:none;font-size:13.5px;margin-bottom:4px}
+  .rail a.on{background:var(--panel2);color:var(--ink);border-left:3px solid var(--amber)}
+  .rail .sec{font-size:10.5px;color:var(--ink3);letter-spacing:1px;margin:18px 0 8px 12px;text-transform:uppercase}
+  .rail .stat{font-size:11px;color:var(--ink3);padding:8px 12px;border-top:1px solid var(--line);margin-top:14px}
+  .rail .stat b{color:var(--green)}
+  /* MAIN */
+  .main{padding:0 26px 60px}
+  .topbar{display:flex;align-items:center;gap:16px;padding:18px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+  .topbar h1{font-size:18px;font-weight:700}
+  .gsearch{margin-left:auto;display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 12px;width:300px}
+  .gsearch input{background:none;border:none;outline:none;color:var(--ink);flex:1}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:20px 0}
+  .kpi{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
+  .kpi .k{font-size:11px;color:var(--ink3);letter-spacing:.5px}
+  .kpi .v{font-size:24px;font-weight:800;margin:4px 0}
+  .kpi .d{font-size:11.5px;color:var(--green)} .kpi .d.down{color:var(--red)}
+  .kpi .spark{display:flex;gap:2px;align-items:flex-end;height:22px;margin-top:6px}
+  .kpi .spark i{width:5px;background:var(--amber);opacity:.7;border-radius:2px}
+  .seclabel{font-size:12px;color:var(--amber);font-weight:700;letter-spacing:1px;margin:24px 0 12px;display:flex;align-items:center;gap:8px}
+  .seclabel::before{content:"";width:18px;height:2px;background:var(--amber)}
+  /* FILTER */
+  .filterbar{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  .fb-search{flex:1;min-width:220px;display:flex;gap:8px;align-items:center;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 12px}
+  .fb-search input{background:none;border:none;outline:none;color:var(--ink);flex:1}
+  .chips{display:flex;gap:6px;flex-wrap:wrap}
+  .chip{font-size:12px;padding:6px 12px;border:1px solid var(--line);border-radius:6px;color:var(--ink2);cursor:pointer;background:var(--bg)}
+  .chip.on{background:var(--amber);color:#1a1205;border-color:var(--amber);font-weight:700}
+  .seg{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+  .seg b{padding:6px 12px;font-size:12px;color:var(--ink2);cursor:pointer;background:var(--bg);border-right:1px solid var(--line)}
+  .seg b:last-child{border:none}
+  .seg b.on{background:var(--amber);color:#1a1205}
+  .smart{font-size:12px;color:var(--ink2);display:flex;align-items:center;gap:6px;margin-left:auto}
+  .toggle{width:36px;height:18px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);position:relative}
+  .toggle::after{content:"";position:absolute;top:1px;left:1px;width:14px;height:14px;border-radius:50%;background:var(--amber)}
+  /* GRID FEED */
+  .grid{display:grid;grid-template-columns:1.7fr 1fr;gap:18px;margin-top:16px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;margin-bottom:12px}
+  .card .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+  .card h3{font-size:15px;font-weight:600;line-height:1.4}
+  .cat{font-size:10.5px;padding:2px 8px;border-radius:5px;border:1px solid var(--line);color:var(--amber)}
+  .cat.model{color:var(--blue)} .cat.paper{color:var(--green)} .cat.product{color:var(--amber)} .cat.ind{color:var(--ink2)}
+  .card .row{font-size:11.5px;color:var(--ink3);display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}
+  .card .reason{margin-top:8px;font-size:12.5px;color:var(--ink2);border-left:2px solid var(--blue);padding-left:8px}
+  /* HOT */
+  .hot{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
+  .hot h4{font-size:13px;color:var(--ink);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+  .hot ol{list-style:none}
+  .hot li{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+  .hot li:last-child{border:none}
+  .rankbadge{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:13px;min-width:24px;color:var(--amber);text-align:center}
+  .hot li .t{font-size:12.5px;color:var(--ink)}
+  .hot li .dot{width:7px;height:7px;border-radius:50%;background:var(--green);margin-left:auto}
+  .hot li .dot.w{background:var(--ink3)}
+  .storylink{font-size:10.5px;color:var(--green);margin-left:6px}
+  .daily{background:var(--panel2);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;margin-top:12px}
+  .daily h4{font-size:12.5px;color:var(--amber);margin-bottom:5px}
+  .daily .d{font-size:11.5px;color:var(--ink2)}
+  /* EVENT */
+  .event{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:20px;margin-top:8px}
+  .event .badge{font-size:11px;color:var(--green);font-weight:700;letter-spacing:1px}
+  .event h2{font-size:19px;margin:8px 0;font-weight:700}
+  .digest{background:var(--panel2);border-left:3px solid var(--amber);padding:12px 14px;border-radius:0 8px 8px 0;font-size:13px;color:var(--ink2);margin:12px 0}
+  .digest b{color:var(--amber)}
+  .timeline{margin-top:14px;border-left:2px solid var(--line);padding-left:16px}
+  .tl-item{position:relative;margin-bottom:14px}
+  .tl-item::before{content:"";position:absolute;left:-22px;top:4px;width:9px;height:9px;border-radius:50%;background:var(--amber)}
+  .tl-item .when{font-size:11px;color:var(--ink3);font-family:"JetBrains Mono",monospace}
+  .tl-item .what{font-size:13px;color:var(--ink)}
+  .latest{margin-top:10px;font-size:12.5px;color:var(--amber);border-left:3px solid var(--amber);padding-left:10px}
+  footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:var(--ink3);font-size:11.5px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  @media(max-width:980px){.app{grid-template-columns:1fr}.rail{display:none}.kpis{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="protobadge">高保真视觉原型 · 仅 UI，不含后端逻辑</div>
+<div class="app">
+  <aside class="rail">
+    <div class="brand"><span class="sq"></span>AI·HOT</div>
+    <a class="on">▦ 精选流</a><a>🔥 热点榜</a><a>📅 日报</a><a>🔎 检索</a>
+    <div class="sec">数据视图</div>
+    <a>📈 趋势</a><a>🏷 分类</a><a>⚙ 来源</a>
+    <div class="stat">API 状态 <b>● 正常</b><br>ETag 复用 · 轮询 ≥60s</div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <h1>AI 热点资讯 · 控制台</h1>
+      <div class="gsearch">🔍<input placeholder="搜索 AI 资讯…"></div>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi"><div class="k">今日精选</div><div class="v mono">32</div><div class="d">▲ 8 vs 昨日</div><div class="spark"><i style="height:8px"></i><i style="height:12px"></i><i style="height:10px"></i><i style="height:16px"></i><i style="height:14px"></i><i style="height:20px"></i></div></div>
+      <div class="kpi"><div class="k">活跃热点</div><div class="v mono">10</div><div class="d">● Top10 锁定</div><div class="spark"><i style="height:14px;background:var(--blue)"></i><i style="height:18px;background:var(--blue)"></i><i style="height:11px;background:var(--blue)"></i><i style="height:20px;background:var(--blue)"></i><i style="height:15px;background:var(--blue)"></i><i style="height:19px;background:var(--blue)"></i></div></div>
+      <div class="kpi"><div class="k">进行中事件</div><div class="v mono">5</div><div class="d">▲ 2 新开</div></div>
+      <div class="kpi"><div class="k">数据源</div><div class="v mono">14</div><div class="d down">▼ 1 延迟</div></div>
+    </div>
+
+    <div class="seclabel">[ 检索中心 · 组合筛选 ]</div>
+    <div class="filterbar">
+      <div class="fb-search">🔍<input value="Agent 框架" placeholder="输入关键词…"></div>
+      <div class="seg"><b class="on">24h</b><b>7天</b></div>
+      <div class="chips">
+        <span class="chip">全部</span><span class="chip on">产品</span><span class="chip">模型</span><span class="chip">论文</span><span class="chip">行业</span><span class="chip">技巧</span>
+      </div>
+      <select class="chip" style="background:var(--bg);color:var(--ink2)"><option>来源 · 全部（本地过滤）</option><option>OpenAI</option><option>Google</option><option>Meta</option></select>
+      <div class="smart">智能聚合 <span class="toggle"></span></div>
+    </div>
+
+    <div class="grid">
+      <div>
+        <div class="card"><div class="top"><span class="cat product">产品</span></div>
+          <h3>AI Agent 框架竞争白热化，标准化呼声渐高</h3>
+          <div class="row"><span>来源 · 行业观察</span><span class="mono">08-17 11:05</span><span>window 7d</span></div>
+          <div class="reason">多家框架涌现，互操作与协议标准化成为下一阶段焦点。</div></div>
+        <div class="card"><div class="top"><span class="cat model">模型</span></div>
+          <h3>新一代推理芯片专为大模型推理优化</h3>
+          <div class="row"><span>来源 · 英伟达</span><span class="mono">08-16 22:40</span><span>window 7d</span></div>
+          <div class="reason">推理成本下降将直接影响 Agent 与多模态应用的落地经济性。</div></div>
+        <div class="card"><div class="top"><span class="cat paper">论文</span></div>
+          <h3>稀疏注意力新架构将训练成本降低 3 倍</h3>
+          <div class="row"><span>来源 · arXiv</span><span class="mono">08-16 15:10</span><span>window 7d</span></div>
+          <div class="reason">若被主流采纳，将重塑长上下文模型的训练范式。</div></div>
+      </div>
+      <div>
+        <div class="hot">
+          <h4>🔥 实时热点榜 · Top 10</h4>
+          <ol>
+            <li><span class="rankbadge">1</span><div class="t">Google Gemini 3</div><span class="dot"></span><span class="storylink">脉络</span></li>
+            <li><span class="rankbadge">2</span><div class="t">Claude 4 企业版</div><span class="dot w"></span></li>
+            <li><span class="rankbadge">3</span><div class="t">Meta Llama 4</div><span class="dot"></span><span class="storylink">脉络</span></li>
+            <li><span class="rankbadge">4</span><div class="t">价格战再起</div><span class="dot w"></span></li>
+            <li><span class="rankbadge">5</span><div class="t">Agent 标准化</div><span class="dot w"></span></li>
+            <li><span class="rankbadge">6</span><div class="t">编程助手 60%</div><span class="dot w"></span></li>
+            <li><span class="rankbadge">7</span><div class="t">评测基准更新</div><span class="dot w"></span></li>
+            <li><span class="rankbadge">8</span><div class="t">端侧小模型</div><span class="dot w"></span></li>
+            <li><span class="rankbadge">9</span><div class="t">监管草案</div><span class="dot w"></span></li>
+            <li><span class="rankbadge">10</span><div class="t">训练工具链</div><span class="dot w"></span></li>
+          </ol>
+          <div class="daily"><h4>📅 今日日报 2026-08-17</h4><div class="d">收录 32 条 · 5 事件 · 3 论文</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="seclabel">[ 事件详情 · 来自热点榜 links.story ]</div>
+    <div class="event">
+      <div class="badge">● 事件进行中 · 含 AI 综述</div>
+      <h2>Google DeepMind 推出 Gemini 3：来龙去脉与最新进展</h2>
+      <div class="digest"><b>AI 综述：</b>Gemini 3 于本周发布，在多项公开榜单登顶，强调长上下文与多模态统一架构。业界普遍视为对旗舰模型格局的直接挑战；矛盾点在于实际可用性与第三方实测仍存在差距，本综述随事件演化更新。</div>
+      <div class="timeline">
+        <div class="tl-item"><div class="when">08-15 21:00</div><div class="what">DeepMind 官方博客预告"重大更新"</div></div>
+        <div class="tl-item"><div class="when">08-16 10:30</div><div class="what">正式发布 Gemini 3，开放 API 灰度</div></div>
+        <div class="tl-item"><div class="when">08-17 08:00</div><div class="what">多家评测机构公布基准结果，登顶部分榜单</div></div>
+      </div>
+      <div class="latest">最新进展：企业版接入通道今日下午开放，首批名额有限。</div>
+    </div>
+
+    <footer>
+      <span>数据来源：AIHOT（aihot.virxact.com）· 匿名只读 v1 API</span>
+      <span>个人非商业 demo · 商业用途须取得 AIHOT 书面授权</span>
+    </footer>
+  </main>
+</div>
+</body>
+</html>

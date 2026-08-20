@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI·HOT 资讯 · 高保真原型（暗黑霓虹）</title>
+<style>
+  :root{
+    --bg:#0A0E1A; --panel:#121829; --panel2:#0F1525;
+    --txt:#E6EAF5; --txt2:#94A3C4; --txt3:#5B6788;
+    --cyan:#22D3EE; --purple:#A855F7; --pink:#F472B6; --green:#34D399;
+    --line:rgba(34,211,238,.18);
+    --grad:linear-gradient(135deg,#22D3EE,#A855F7);
+    --glow:0 0 0 1px rgba(34,211,238,.25),0 8px 40px rgba(34,211,238,.12);
+    --r:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:"Inter","PingFang SC","Microsoft YaHei",sans-serif;
+    background:
+      radial-gradient(1200px 600px at 80% -10%,rgba(168,85,247,.18),transparent 60%),
+      radial-gradient(1000px 500px at -10% 10%,rgba(34,211,238,.14),transparent 55%),
+      var(--bg);
+    color:var(--txt);line-height:1.6;min-height:100vh;
+    background-attachment:fixed;
+  }
+  .protobadge{position:fixed;top:14px;right:14px;z-index:50;font-size:11px;letter-spacing:.5px;
+    padding:6px 12px;border-radius:999px;background:rgba(18,24,41,.8);border:1px solid var(--line);
+    color:var(--txt2);backdrop-filter:blur(8px)}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 22px 80px}
+  /* NAV */
+  nav{position:sticky;top:0;z-index:30;backdrop-filter:blur(14px);
+    background:linear-gradient(180deg,rgba(10,14,26,.92),rgba(10,14,26,.6));
+    border-bottom:1px solid var(--line)}
+  .nav-in{max-width:1180px;margin:0 auto;padding:14px 22px;display:flex;align-items:center;gap:22px}
+  .brand{font-weight:800;font-size:20px;letter-spacing:1px;display:flex;align-items:center;gap:10px}
+  .brand .dot{width:12px;height:12px;border-radius:50%;background:var(--grad);box-shadow:0 0 14px var(--cyan)}
+  .brand b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .navlinks{display:flex;gap:20px;font-size:14px;color:var(--txt2)}
+  .navlinks a{color:var(--txt2);text-decoration:none;padding:6px 2px;border-bottom:2px solid transparent}
+  .navlinks a.on{color:var(--txt);border-color:var(--cyan)}
+  .gsearch{margin-left:auto;display:flex;align-items:center;gap:8px;background:var(--panel);
+    border:1px solid var(--line);border-radius:999px;padding:8px 14px;width:300px}
+  .gsearch input{background:none;border:none;outline:none;color:var(--txt);flex:1;font-size:14px}
+  .gsearch span{color:var(--txt3)}
+  /* SECTION LABEL */
+  .seclabel{display:inline-flex;align-items:center;gap:8px;margin:42px 0 16px;font-size:13px;
+    color:var(--cyan);font-weight:700;letter-spacing:1px}
+  .seclabel::before{content:"";width:22px;height:2px;background:var(--grad)}
+  /* HERO */
+  .hero{display:grid;grid-template-columns:1.6fr 1fr;gap:20px;margin-top:28px}
+  .hero-main{background:linear-gradient(160deg,rgba(168,85,247,.16),rgba(34,211,238,.08)),var(--panel);
+    border:1px solid var(--line);border-radius:var(--r);padding:30px;box-shadow:var(--glow);position:relative;overflow:hidden}
+  .hero-main::after{content:"";position:absolute;inset:0;background:
+    radial-gradient(400px 200px at 90% 0,rgba(34,211,238,.12),transparent)}
+  .tag{display:inline-block;font-size:12px;padding:4px 10px;border-radius:999px;
+    border:1px solid var(--line);color:var(--cyan);margin-bottom:14px}
+  .hero h1{font-size:30px;line-height:1.3;font-weight:800;margin-bottom:12px}
+  .hero p{color:var(--txt2);font-size:15px;max-width:90%}
+  .hero .meta{margin-top:18px;display:flex;gap:16px;color:var(--txt3);font-size:13px}
+  .hero .cta{margin-top:22px;display:inline-block;padding:11px 22px;border-radius:12px;
+    background:var(--grad);color:#06121f;font-weight:700;text-decoration:none;box-shadow:0 8px 30px rgba(34,211,238,.3)}
+  /* FILTER BAR */
+  .filterbar{margin-top:26px;background:var(--panel2);border:1px solid var(--line);border-radius:var(--r);
+    padding:18px 20px}
+  .fb-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  .fb-search{flex:1;min-width:240px;display:flex;align-items:center;gap:8px;background:var(--bg);
+    border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+  .fb-search input{background:none;border:none;outline:none;color:var(--txt);flex:1}
+  .chips{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{font-size:13px;padding:7px 14px;border-radius:999px;border:1px solid var(--line);
+    color:var(--txt2);cursor:pointer;background:var(--bg)}
+  .chip.on{color:#06121f;background:var(--grad);border-color:transparent;font-weight:700}
+  .seg{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .seg b{font-weight:600;padding:8px 14px;font-size:13px;color:var(--txt2);cursor:pointer;background:var(--bg)}
+  .seg b.on{background:var(--grad);color:#06121f}
+  .smart{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--txt2);margin-left:auto}
+  .toggle{width:42px;height:22px;border-radius:999px;background:var(--panel);border:1px solid var(--line);position:relative}
+  .toggle::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--grad);transition:.2s}
+  /* LAYOUT */
+  .grid{display:grid;grid-template-columns:1.7fr 1fr;gap:22px;margin-top:24px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px;
+    transition:.2s;position:relative}
+  .card:hover{transform:translateY(-2px);box-shadow:var(--glow);border-color:rgba(34,211,238,.4)}
+  .card h3{font-size:17px;font-weight:700;margin-bottom:8px;line-height:1.4}
+  .card .row{display:flex;gap:10px;align-items:center;font-size:12.5px;color:var(--txt3);flex-wrap:wrap}
+  .card .reason{margin-top:10px;font-size:13.5px;color:var(--txt2);border-left:2px solid var(--purple);padding-left:10px}
+  .cat{font-size:11px;padding:3px 9px;border-radius:6px;border:1px solid var(--line);color:var(--cyan)}
+  .cat.model{color:var(--cyan)} .cat.product{color:var(--pink)} .cat.paper{color:var(--green)} .cat.ind{color:var(--purple)}
+  /* HOT */
+  .hot{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .hot h4{font-size:15px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  .hot h4 .flame{color:var(--pink)}
+  .hot ol{list-style:none}
+  .hot li{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px dashed rgba(255,255,255,.06)}
+  .hot li:last-child{border:none}
+  .rank{font-weight:800;font-size:16px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;min-width:22px}
+  .hot li .t{font-size:13.5px;color:var(--txt)}
+  .hot li .s{font-size:11.5px;color:var(--txt3)}
+  .storylink{font-size:11px;color:var(--green);margin-top:2px;display:inline-block}
+  /* DAILY */
+  .daily{background:linear-gradient(160deg,rgba(34,211,238,.1),transparent),var(--panel);
+    border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:16px}
+  .daily h4{font-size:14px;margin-bottom:8px}
+  .daily .d{font-size:12.5px;color:var(--txt2)}
+  /* EVENT DETAIL */
+  .event{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:26px;margin-top:8px;box-shadow:var(--glow)}
+  .event .badge{display:inline-block;font-size:12px;padding:4px 10px;border-radius:999px;background:rgba(52,211,153,.12);color:var(--green);border:1px solid rgba(52,211,153,.3);margin-bottom:12px}
+  .event h2{font-size:24px;margin-bottom:10px}
+  .digest{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:16px;font-size:14px;color:var(--txt2);margin:14px 0}
+  .digest b{color:var(--cyan)}
+  .timeline{margin-top:16px;border-left:2px solid var(--line);padding-left:18px}
+  .tl-item{position:relative;margin-bottom:16px}
+  .tl-item::before{content:"";position:absolute;left:-25px;top:4px;width:10px;height:10px;border-radius:50%;background:var(--grad)}
+  .tl-item .when{font-size:12px;color:var(--txt3)}
+  .tl-item .what{font-size:14px;color:var(--txt)}
+  .latest{margin-top:12px;font-size:13.5px;color:var(--pink);border-left:2px solid var(--pink);padding-left:10px}
+  footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--line);color:var(--txt3);font-size:12.5px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  @media(max-width:880px){.hero,.grid{grid-template-columns:1fr}.gsearch{display:none}}
+</style>
+</head>
+<body>
+<div class="protobadge">高保真视觉原型 · 仅 UI，不含后端逻辑</div>
+<nav><div class="nav-in">
+  <div class="brand"><span class="dot"></span>AI·<b>HOT</b> 资讯</div>
+  <div class="navlinks"><a class="on">精选</a><a>热点榜</a><a>日报</a><a>检索</a></div>
+  <div class="gsearch"><span>🔍</span><input placeholder="搜索 AI 资讯…"></div>
+</div></nav>
+
+<div class="wrap">
+  <div class="seclabel">[ 首页 · 精选流 ]</div>
+  <div class="hero">
+    <div class="hero-main">
+      <span class="tag">今日头条 · 模型</span>
+      <h1>OpenAI 发布 GPT-5.2：推理与多模态能力大幅跃升</h1>
+      <p>新模型在复杂推理、长上下文与图像理解上显著提升，API 定价维持不变，开发者今日即可在精选池体验。</p>
+      <div class="meta"><span>来源 · OpenAI 官方</span><span>北京时间 08-17 09:20</span><span>推荐理由 · 季度级旗舰更新</span></div>
+      <a class="cta" href="#">阅读详情 →</a>
+    </div>
+    <div class="hot">
+      <h4><span class="flame">🔥</span> 实时热点榜 · Top 10</h4>
+      <ol>
+        <li><span class="rank">1</span><div><div class="t">Google DeepMind 推出 Gemini 3</div><div class="s">来源 · Google</div><span class="storylink">↳ 看事件脉络</span></div></li>
+        <li><span class="rank">2</span><div><div class="t">Anthropic Claude 4 企业版上线</div><div class="s">来源 · Anthropic</div></div></li>
+        <li><span class="rank">3</span><div><div class="t">Meta 开源 Llama 4 系列</div><div class="s">来源 · Meta</div><span class="storylink">↳ 看事件脉络</span></div></li>
+        <li><span class="rank">4</span><div><div class="t">国内大模型价格战再起</div><div class="s">来源 · 行业</div></div></li>
+        <li><span class="rank">5</span><div><div class="t">AI Agent 框架标准化呼声高</div><div class="s">来源 · 社区</div></div></li>
+      </ol>
+      <div class="daily">
+        <h4>📅 今日日报</h4>
+        <div class="d">2026-08-17 已生成 · 收录 32 条精选，含 5 个热点事件与 3 篇论文。点击查看完整日切成品。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="seclabel">[ 检索中心 · 组合筛选 ]</div>
+  <div class="filterbar">
+    <div class="fb-row">
+      <div class="fb-search">🔍<input value="Agent 框架" placeholder="输入关键词…"></div>
+      <div class="seg"><b class="on">24h</b><b>7天</b></div>
+      <div class="smart">智能聚合 <span class="toggle"></span></div>
+    </div>
+    <div class="fb-row" style="margin-top:12px">
+      <div class="chips">
+        <span class="chip">全部</span><span class="chip on">产品</span><span class="chip">模型</span><span class="chip">论文</span><span class="chip">行业</span><span class="chip">技巧</span>
+      </div>
+      <select class="chip" style="background:var(--bg);color:var(--txt2)"><option>来源 · 全部（本地过滤）</option><option>OpenAI</option><option>Google</option><option>Meta</option></select>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div>
+      <div class="card">
+        <span class="cat product">产品</span>
+        <h3>AI Agent 框架竞争白热化，标准化呼声渐高</h3>
+        <div class="row"><span>来源 · 行业观察</span><span>北京时间 08-17 11:05</span><span>window 7d</span></div>
+        <div class="reason">为什么值得关注：多家框架涌现，互操作与协议标准化成为下一阶段焦点。</div>
+      </div>
+      <div class="card">
+        <span class="cat model">模型</span>
+        <h3>新一代推理芯片专为大模型推理优化</h3>
+        <div class="row"><span>来源 · 英伟达</span><span>北京时间 08-16 22:40</span><span>window 7d</span></div>
+        <div class="reason">为什么值得关注：推理成本下降将直接影响 Agent 与多模态应用的落地经济性。</div>
+      </div>
+      <div class="card">
+        <span class="cat paper">论文</span>
+        <h3>稀疏注意力新架构将训练成本降低 3 倍</h3>
+        <div class="row"><span>来源 · arXiv</span><span>北京时间 08-16 15:10</span><span>window 7d</span></div>
+        <div class="reason">为什么值得关注：若被主流采纳，将重塑长上下文模型的训练范式。</div>
+      </div>
+    </div>
+    <div>
+      <div class="hot">
+        <h4><span class="flame">🔥</span> 热点榜（续）</h4>
+        <ol start="6">
+          <li><span class="rank">6</span><div class="t">AI 编程助手渗透率破 60%</div></li>
+          <li><span class="rank">7</span><div class="t">多模态评测基准更新</div></li>
+          <li><span class="rank">8</span><div class="t">端侧小模型跑进手机</div></li>
+          <li><span class="rank">9</span><div class="t">AI 监管草案征求意见</div></li>
+          <li><span class="rank">10</span><div class="t">开源社区发布训练工具链</div></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="seclabel">[ 事件详情 · 来自热点榜 links.story ]</div>
+  <div class="event">
+    <span class="badge">● 事件进行中 · 含 AI 综述</span>
+    <h2>Google DeepMind 推出 Gemini 3：来龙去脉与最新进展</h2>
+    <div class="digest"><b>AI 综述：</b>Gemini 3 于本周发布，在多项公开榜单登顶，强调长上下文与多模态统一架构。业界普遍视为对旗舰模型格局的直接挑战；矛盾点在于实际可用性与第三方实测仍存在差距，本综述随事件演化更新。</div>
+    <div class="timeline">
+      <div class="tl-item"><div class="when">08-15 21:00</div><div class="what">DeepMind 官方博客预告"重大更新"</div></div>
+      <div class="tl-item"><div class="when">08-16 10:30</div><div class="what">正式发布 Gemini 3，开放 API 灰度</div></div>
+      <div class="tl-item"><div class="when">08-17 08:00</div><div class="what">多家评测机构公布基准结果，登顶部分榜单</div></div>
+    </div>
+    <div class="latest">最新进展：企业版接入通道今日下午开放，首批名额有限。</div>
+  </div>
+
+  <footer>
+    <span>数据来源：AIHOT（aihot.virxact.com）· 匿名只读 v1 API</span>
+    <span>个人非商业 demo · 商业用途须取得 AIHOT 书面授权</span>
+  </footer>
+</div>
+</body>
+</html>

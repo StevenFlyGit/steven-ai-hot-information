@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI·HOT 资讯 · 杂志编辑风</title>
+<meta name="description" content="AI 热点资讯查看 / 搜索 / 抓取平台 · 数据来源 AIHOT 匿名只读 v1 API">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- 演示数据横幅：仅当上游不可达、回退 fixture 时显示（诚实标注，不伪装实时） -->
+<div class="fallback-banner" id="fbBanner">
+  <span class="dot"></span><b>演示数据</b> · 当前为 AIHOT 上游样例回退（上游暂不可达），数据非实时，仅用于展示形态。
+</div>
+
+<!-- ============ 顶部导航 ============ -->
+<nav>
+  <div class="nav-in">
+    <div class="brand" data-nav="home">AI·<b>HOT</b> 资讯</div>
+    <div class="navlinks">
+      <a class="on" data-view="home">精选</a>
+      <a data-view="all">全量</a>
+      <a data-view="hot">热点榜</a>
+      <a data-view="search">检索</a>
+      <a data-view="daily">日报</a>
+    </div>
+    <form class="gsearch" id="globalSearchForm" role="search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input id="globalSearch" placeholder="搜索 AI 资讯…" aria-label="全局搜索">
+    </form>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <!-- ============================================================
+       视图 1 · 首页 / 资讯流
+       ============================================================ -->
+  <section id="view-home" class="view on">
+
+    <div class="seclabel" id="homeDate">本期 · 加载中…</div>
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="lede">
+        <div class="kicker" id="heroKicker">今日头条</div>
+        <h1 id="heroTitle">加载中…</h1>
+        <p class="summary" id="heroSummary"></p>
+        <div class="byline" id="heroByline"></div>
+        <a class="read" id="heroRead" href="#" target="_blank" rel="noopener">阅读全文 →</a>
+      </div>
+      <aside class="side">
+        <h4>本期要闻</h4>
+        <div class="side-sub">实时热点榜 · Top 5</div>
+        <ol class="mini-hot" id="miniHot"></ol>
+        <a class="more" data-nav="hot">查看完整热点榜 →</a>
+      </aside>
+    </div>
+
+    <!-- 精选流 -->
+    <div class="seclabel zh">编辑精选 · 今日策展流</div>
+    <div class="feed-head">
+      <div class="quickfilter" id="homeFilter">
+        <span class="qchip on" data-cat="all">全部</span>
+        <span class="qchip" data-cat="模型">模型</span>
+        <span class="qchip" data-cat="产品">产品</span>
+        <span class="qchip" data-cat="论文">论文</span>
+        <span class="qchip" data-cat="行业">行业</span>
+        <span class="qchip" data-cat="技巧">技巧</span>
+      </div>
+      <span style="font-size:12.5px;color:var(--ink-700)">数据来源：AIHOT · 匿名只读 v1</span>
+    </div>
+
+    <div class="grid">
+      <div id="feedList"></div>
+
+      <aside>
+        <div class="daily-entry">
+          <h4>今日日报</h4>
+          <div class="date" id="homeDailyDate">—</div>
+          <p id="homeDailyDesc">加载中…</p>
+          <a class="read" data-nav="daily">查阅日报归档 →</a>
+        </div>
+        <div class="rail-note">
+          <span class="rh">编辑手记</span>
+          来源筛选为客户端本地过滤，智能聚合非语义检索。精选为空时自动回退全部结果——这些边界始终如实标注，避免误导。
+        </div>
+      </aside>
+    </div>
+
+  </section>
+
+  <!-- ============================================================
+       视图 1.5 · 全量热点（mode=all）
+       ============================================================ -->
+  <section id="view-all" class="view">
+
+    <div class="seclabel zh">全量热点 · 全部公开池（mode=all）</div>
+    <div class="feed-head">
+      <div class="quickfilter" id="allFilter">
+        <span class="qchip on" data-cat="all">全部</span>
+        <span class="qchip" data-cat="模型">模型</span>
+        <span class="qchip" data-cat="产品">产品</span>
+        <span class="qchip" data-cat="论文">论文</span>
+        <span class="qchip" data-cat="行业">行业</span>
+        <span class="qchip" data-cat="技巧">技巧</span>
+      </div>
+      <span style="font-size:12.5px;color:var(--ink-700)">数据来源：AIHOT · 匿名只读 v1 · mode=all</span>
+    </div>
+
+    <div class="grid">
+      <div id="allList"></div>
+
+      <aside>
+        <div class="daily-entry">
+          <h4>全量池说明</h4>
+          <div class="date">mode=all · 全量公开</div>
+          <p>此处展示 AIHOT 全量公开池，未经编辑精选策展，覆盖广度优于「精选」栏目，但信噪比需自行甄别。</p>
+          <a class="read" data-nav="home">回到编辑精选 →</a>
+        </div>
+        <div class="rail-note">
+          <span class="rh">阅读提示</span>
+          全量池包含精选之外的公开条目；来源筛选为客户端本地过滤，智能聚合非语义检索。
+        </div>
+      </aside>
+    </div>
+
+  </section>
+
+  <!-- ============================================================
+       视图 2 · 热点榜
+       ============================================================ -->
+  <section id="view-hot" class="view">
+    <div class="seclabel zh">热点榜 · 实时 Top 10</div>
+    <div class="search-head" style="margin-bottom:8px">
+      <p>按 <b style="color:var(--navy)">rank</b> 顺序排印，仅呈现平台热度名次，不推算、不展示内部热度值（空位统一显示「—」）。含「事件脉络」条目标注可进入事件详情。</p>
+    </div>
+    <div class="hotwrap" id="hotList" style="margin-top:18px"></div>
+  </section>
+
+  <!-- ============================================================
+       视图 3 · 检索中心（5 项能力映射）
+       ============================================================ -->
+  <section id="view-search" class="view">
+    <div class="seclabel zh">检索中心 · 组合筛选</div>
+    <div class="search-head">
+      <h2>组合检索 · 五项能力</h2>
+      <p>下方控件同时呈现 5 项检索能力，并实时拼出对应的 AIHOT 匿名只读 API 请求。能力分三类诚实标注：<b style="color:var(--navy)">直接 API 参数</b> · <b style="color:var(--danger)">本地过滤（客户端）</b> · <b style="color:var(--olive)">智能聚合层（非语义检索）</b>。</p>
+    </div>
+
+    <div class="filterbar">
+      <!-- ① 关键词搜索 -->
+      <div class="fb-group">
+        <div class="fb-label">① 关键词搜索 <span class="tag api">直接 API · q</span></div>
+        <div class="fb-search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input id="kw" placeholder="输入关键词，如 Agent、推理、多模态…">
+        </div>
+      </div>
+
+      <!-- ② 分类筛选 -->
+      <div class="fb-group">
+        <div class="fb-label">② 分类筛选 <span class="tag api">直接 API · category</span></div>
+        <div class="chips" id="catChips">
+          <span class="chip on" data-cat="all">全部</span>
+          <span class="chip" data-cat="模型">模型</span>
+          <span class="chip" data-cat="产品">产品</span>
+          <span class="chip" data-cat="论文">论文</span>
+          <span class="chip" data-cat="行业">行业</span>
+          <span class="chip" data-cat="技巧">技巧</span>
+        </div>
+      </div>
+
+      <!-- ③ 时间范围筛选 -->
+      <div class="fb-group">
+        <div class="fb-label">③ 时间范围筛选 <span class="tag api">直接 API · window + by</span></div>
+        <div class="seg-row">
+          <div class="seg" id="winSeg">
+            <button class="on" data-v="24h">24 小时</button>
+            <button data-v="7d">7 天</button>
+          </div>
+          <div class="seg" id="bySeg">
+            <button class="on" data-v="timeline">AIHOT 时间轴</button>
+            <button data-v="published">原文发布时间</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ④ 来源筛选（本地过滤） -->
+      <div class="fb-group">
+        <div class="fb-label">④ 来源筛选 <span class="tag local">本地过滤 · 客户端派生</span></div>
+        <div class="sel-wrap">
+          <select id="srcSel">
+            <option value="">全部来源（本地过滤）</option>
+          </select>
+        </div>
+        <div class="fb-note">skill 未暴露独立来源参数，结果为拉取后于客户端按 <code>source.name</code> 过滤（非 API 参数）。</div>
+      </div>
+
+      <!-- ⑤ 智能聚合层（非语义检索） -->
+      <div class="fb-group">
+        <div class="fb-label">⑤ 智能检索 <span class="tag smart">智能聚合层 · 非语义检索</span></div>
+        <div class="smart-row">
+          <div class="txt">开启后由 <b>编辑策展（selected）</b> + <b>AI 综述（stories.digest）</b> + <b>推荐理由（reason）</b> + <b>热点编辑智能（hot-topics）</b> 构成聚合结果。<b style="color:var(--danger)">注意：skill 无向量语义搜索端点，此非字面语义检索。</b></div>
+          <button class="toggle on" id="smartToggle" aria-label="智能聚合开关"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 当前拼出的 API 请求示意 -->
+    <div class="apibox">
+      <div class="ah"><span class="m">GET</span> 当前拼出的 API 请求示意</div>
+      <div class="acode" id="apiCode"></div>
+      <div class="note" id="apiNote"></div>
+    </div>
+
+    <!-- 检索结果 -->
+    <div class="search-results" id="searchResults"></div>
+  </section>
+
+  <!-- ============================================================
+       视图 4 · 日报归档
+       ============================================================ -->
+  <section id="view-daily" class="view">
+    <div class="seclabel zh">日报归档 · 按日期索引</div>
+    <div class="daily-layout">
+      <ul class="daily-index" id="dailyIndex"></ul>
+      <div>
+        <div class="daily-card on" id="dailyCard"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       视图 5 · 事件详情（links.story）
+       ============================================================ -->
+  <section id="view-event" class="view">
+    <a class="backlink" data-nav="hot"><span>← 返回热点榜</span></a>
+    <div class="event" id="eventBox"></div>
+  </section>
+
+  <footer>
+    <span class="src">数据来源：AIHOT（aihot.virxact.com）· 匿名只读 v1 API · 署名 ≠ 授权</span>
+    <span>个人非商业 demo · 商业用途须取得 AIHOT 书面授权 · 经同源代理转发</span>
+  </footer>
+
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
