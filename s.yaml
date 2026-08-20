@@ -1,0 +1,49 @@
+# Serverless Devs V3 配置 · 阿里云函数计算 FC Web 函数部署
+#
+# 首次使用前：
+#   1. 安装 Serverless Devs:  npm install -g @serverless-devs/s3
+#   2. 配置凭证:              s config add --AccessKeyID <AK> --AccessKeyKeySecret <SK>
+#   3. 首次部署（创建函数）:   s deploy
+#   4. 后续部署（更新代码）:   s deploy
+#
+# 环境变量（AIHOT_UPSTREAM 等）建议在 FC 控制台手动配置，
+# 或通过 GitHub Actions CI/CD 自动注入（见 .github/workflows/deploy.yml）。
+#
+# 文档: https://docs.serverless-devs.com/user-guide/spec/
+
+edition: 3.0.0
+name: aihot-proxy
+access: default
+
+vars:
+  region: cn-hangzhou
+
+resources:
+  aihot-proxy:
+    component: fc3
+    props:
+      region: ${vars.region}
+      functionName: aihot-proxy
+      description: "AIHOT 资讯平台 · 极薄 API 代理（ETag 缓存 + fixture 回退）"
+      runtime: python3.10
+      handler: index.main
+      timeout: 60
+      memorySize: 256
+      instanceConcurrency: 10
+      code: ./dist/fc-package
+      function:
+        environmentVariables:
+          AIHOT_UPSTREAM: "https://aihot.virxact.com"
+          AIHOT_API_PREFIX: "/api/v1"
+          AIHOT_CACHE_TTL: "300"
+          AIHOT_MIN_POLL_INTERVAL: "60"
+          MENU_CACHE_TTL: "3600"
+          PORT: "9000"
+      triggers:
+        - triggerName: http-trigger
+          triggerType: http
+          triggerConfig:
+            authType: anonymous
+            methods:
+              - GET
+              - HEAD

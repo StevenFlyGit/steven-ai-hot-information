@@ -1,15 +1,17 @@
-"""AIHOT 资讯平台 · 极薄后端代理 + 同源静态资源服务。
+"""AIHOT 资讯平台 · 极薄后端代理（FC Web Function 版）。
 
 技术选型：Python 标准库（http.server + urllib），**零三方依赖**，保证开箱即跑。
+部署架构：阿里云函数计算 FC Web 函数（仅 API），静态资源由 ESA Pages 托管。
 职责：
-- 同源托管 web/ 静态站点，浏览器经自有代理转发，规避 AIHOT 的 CORS 限制。
 - /api/proxy/<path> 转发 AIHOT 匿名只读 v1 API（ETag 缓存 + 60s 节流 + fixture 回退）。
 - /api/health 健康检查。
+- /api/menu 菜单数据组合。
+- 非 API 路径返回 404（前端静态资源由 ESA Pages 提供）。
 
 启动：
     python server/server.py
 自定义端口 / 上游：
-    PORT=8080 AIHOT_UPSTREAM=https://aihot.virxact.com python server/server.py
+    PORT=9000 AIHOT_UPSTREAM=https://aihot.virxact.com python server/server.py
 """
 from __future__ import annotations
 
@@ -30,17 +32,6 @@ from menu import (
 
 # 仅允许转发到 AIHOT 已知只读端点，避免被当作开放代理（SSRF 防护）
 ALLOWED_PREFIXES = ("/items", "/hot-topics", "/stories", "/dailies")
-
-MIME = {
-    ".html": "text/html; charset=utf-8",
-    ".css": "text/css; charset=utf-8",
-    ".js": "application/javascript; charset=utf-8",
-    ".json": "application/json; charset=utf-8",
-    ".svg": "image/svg+xml",
-    ".png": "image/png",
-    ".ico": "image/x-icon",
-    ".woff2": "font/woff2",
-}
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -72,29 +63,10 @@ class Handler(BaseHTTPRequestHandler):
         if self.command != "HEAD":
             self.wfile.write(body)
 
-    # ----------------------------------------------------------------- 静态
-    def _serve_static(self, path: str) -> None:
-        if path in ("/", ""):
-            path = "/index.html"
-        # 规范化并禁止目录穿越
-        rel = os.path.normpath(path).lstrip("/\\")
-        full = os.path.join(CONFIG.web_dir, rel)
-        abs_web = os.path.abspath(CONFIG.web_dir)
-        if not os.path.abspath(full).startswith(abs_web):
-            self._send(403, b"Forbidden", "text/plain; charset=utf-8")
-            return
-        if not os.path.isfile(full):
-            # SPA 兜底：未知路径回退首页（hash 路由本身不会触发，保留健壮性）
-            full = os.path.join(abs_web, "index.html")
-        ext = os.path.splitext(full)[1].lower()
-        ctype = MIME.get(ext, "application/octet-stream")
-        try:
-            with open(full, "rb") as fh:
-                data = fh.read()
-        except OSError:
-            self._send(404, b"Not Found", "text/plain; charset=utf-8")
-            return
-        self._send(200, data, ctype)
+    # -------------------------------------------------------------- 404
+    def _not_found(self) -> None:
+        """非 API 路径返回 404（静态资源已由 ESA Pages 托管）。"""
+        self._send(404, b'{"error":"not_found"}', "application/json; charset=utf-8")
 
     # ----------------------------------------------------------------- 菜单
     def _serve_menu(self, parsed: "urllib.parse.ParseResult") -> None:
@@ -198,7 +170,8 @@ class Handler(BaseHTTPRequestHandler):
             )
             return
 
-        self._serve_static(p)
+        # 非 API 路径 → 404（静态资源由 ESA Pages 托管）
+        self._not_found()
 
     do_HEAD = do_GET  # noqa: N815
 

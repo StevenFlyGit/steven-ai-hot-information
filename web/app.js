@@ -14,7 +14,23 @@
 (function () {
   "use strict";
 
-  var API = "/api/proxy";
+  /* ============================================================
+   * 部署配置 · 按实际部署方式修改 API_BASE
+   *
+   * 模式 A（推荐）· ESA Pages 回源代理 —— 保持 "/api/proxy" 不变
+   *   ESA 控制台配置 /api/* 回源到 FC 函数 URL，浏览器始终同源通信，
+   *   无 CORS 问题，X-AIHOT-Source 响应头完整透传。
+   *
+   * 模式 B · 直连 FC 函数 —— 取消下方注释并填入 FC HTTP 触发器 URL
+   *   var API_BASE = "https://<account>.<region>.fc.aliyuncs.com";
+   *   需在 FC 侧配置 CORS 响应头（Access-Control-Allow-Origin: *）。
+   *
+   * 模式 C · 本地开发 —— 保持 "/api/proxy"（由 python server/server.py 提供）
+   * ============================================================ */
+  var API_BASE = (typeof window.__AIHOT_API_BASE__ !== "undefined")
+    ? window.__AIHOT_API_BASE__
+    : "";  // 默认 "" = 同源（ESA 回源代理模式）
+  var API = API_BASE + "/api/proxy";
 
   /* ---------- 分类映射（slug ↔ 中文/英文 kicker） ----------
    * 真实合法 slug 来自 AIHOT（见接口测试报告）：ai-models / ai-products / paper / industry / tip

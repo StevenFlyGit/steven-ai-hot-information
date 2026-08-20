@@ -22,3 +22,12 @@ Thumbs.db
 
 # 依赖锁（本代理零三方依赖，保留 requirements.txt 仅作说明）
 node_modules/
+
+# FC 构建产物 / Serverless Devs
+.s/
+.cache/
+dist/
+*.zip
+
+# 部署临时文件
+*.tgz

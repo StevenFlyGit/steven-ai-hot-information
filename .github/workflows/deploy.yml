@@ -1,0 +1,178 @@
+name: Deploy AIHOT Demo (FC + ESA)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "server/**"
+      - "web/**"
+      - ".github/workflows/deploy.yml"
+  workflow_dispatch: # 支持手动触发
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aihot-deploy
+  cancel-in-progress: false
+
+env:
+  FC_REGION: cn-hangzhou
+  FC_FUNCTION_NAME: aihot-proxy
+
+jobs:
+  # ╔═══════════════════════════════════════════════════════╗
+  # ║  Job 1 · 后端 → FC Web 函数                           ║
+  # ╚═══════════════════════════════════════════════════════╝
+  deploy-backend:
+    name: Deploy Backend → FC
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      contains(join(github.event.head_commit.modified, ' '), 'server/') ||
+      contains(join(github.event.head_commit.added, ' '), 'server/') ||
+      contains(join(github.event.head_commit.modified, ' '), '.github/workflows/')
+    defaults:
+      run:
+        working-directory: server
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Validate Python syntax
+        run: |
+          python -m py_compile server.py
+          python -m py_compile aihot_client.py
+          python -m py_compile menu.py
+          python -m py_compile config.py
+          echo "All Python files passed syntax check."
+
+      - name: Package function code
+        run: |
+          mkdir -p ../dist/fc-package
+          cp server.py aihot_client.py menu.py config.py ../dist/fc-package/
+          cp -r fixtures ../dist/fc-package/fixtures
+          cd ../dist
+          zip -r fc-package.zip fc-package/
+          echo "Package size: $(du -sh fc-package.zip | cut -f1)"
+
+      - name: Install Aliyun CLI
+        run: |
+          curl -sL https://aliyuncli.alicdn.com/aliyun-cli-linux-latest-amd64.tgz -o /tmp/aliyun-cli.tgz
+          tar -xzf /tmp/aliyun-cli.tgz -C /usr/local/bin
+          aliyun version
+
+      - name: Configure credentials
+        run: |
+          aliyun configure set \
+            --mode AK \
+            --region ${{ env.FC_REGION }} \
+            --access-key-id ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_ID }} \
+            --access-key-secret ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_SECRET }}
+
+      - name: Deploy to FC — UpdateFunctionCode
+        run: |
+          aliyun fc UpdateFunctionCode \
+            --region ${{ env.FC_REGION }} \
+            --functionName ${{ env.FC_FUNCTION_NAME }} \
+            --zipFile "$(base64 -w0 ../dist/fc-package.zip)"
+
+      - name: Deploy to FC — UpdateFunctionConfiguration
+        run: |
+          aliyun fc UpdateFunctionConfiguration \
+            --region ${{ env.FC_REGION }} \
+            --functionName ${{ env.FC_FUNCTION_NAME }} \
+            --environmentVariables '{
+              "AIHOT_UPSTREAM": "${{ vars.AIHOT_UPSTREAM || 'https://aihot.virxact.com' }}",
+              "AIHOT_API_PREFIX": "/api/v1",
+              "AIHOT_CACHE_TTL": "300",
+              "AIHOT_MIN_POLL_INTERVAL": "60",
+              "MENU_CACHE_TTL": "3600",
+              "PORT": "9000"
+            }'
+
+      - name: Backend deployment complete
+        run: echo "FC function '${{ env.FC_FUNCTION_NAME }}' deployed successfully."
+
+  # ╔═══════════════════════════════════════════════════════╗
+  # ║  Job 2 · 前端 → ESA Pages                             ║
+  # ╚═══════════════════════════════════════════════════════╝
+  deploy-frontend:
+    name: Deploy Frontend → ESA
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      contains(join(github.event.head_commit.modified, ' '), 'web/') ||
+      contains(join(github.event.head_commit.added, ' '), 'web/') ||
+      contains(join(github.event.head_commit.modified, ' '), '.github/workflows/')
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate static assets
+        run: |
+          cd web
+          test -f index.html || { echo "index.html missing"; exit 1; }
+          test -f styles.css || { echo "styles.css missing"; exit 1; }
+          test -f app.js     || { echo "app.js missing"; exit 1; }
+          echo "Static assets validated."
+          du -sh .
+
+      - name: Install Aliyun CLI
+        run: |
+          curl -sL https://aliyuncli.alicdn.com/aliyun-cli-linux-latest-amd64.tgz -o /tmp/aliyun-cli.tgz
+          tar -xzf /tmp/aliyun-cli.tgz -C /usr/local/bin
+          aliyun version
+
+      - name: Configure credentials
+        run: |
+          aliyun configure set \
+            --mode AK \
+            --region cn-hangzhou \
+            --access-key-id ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_ID }} \
+            --access-key-secret ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_SECRET }}
+
+      - name: Package static assets
+        run: |
+          mkdir -p dist
+          zip -r dist/esa-web.zip web/
+          echo "Package size: $(du -sh dist/esa-web.zip | cut -f1)"
+
+      - name: Upload to ESA Pages
+        run: |
+          aliyun esa UploadSiteResource \
+            --SiteId ${{ vars.ESA_SITE_ID }} \
+            --FilePath "$(pwd)/dist/esa-web.zip" \
+            --ResourceType static
+
+      - name: Frontend deployment complete
+        run: echo "ESA Pages site '${{ vars.ESA_SITE_ID }}' deployed successfully."
+
+  # ╔═══════════════════════════════════════════════════════╗
+  # ║  Job 3 · 部署汇总                                     ║
+  # ╚═══════════════════════════════════════════════════════╝
+  deploy-summary:
+    name: Deployment Summary
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    needs: [deploy-backend, deploy-frontend]
+    if: always()
+
+    steps:
+      - name: Write summary
+        run: |
+          echo "## AIHOT Demo Deployment Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Service | Target | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|---------|--------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Backend API | FC Web Function | ${{ needs.deploy-backend.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Frontend | ESA Pages | ${{ needs.deploy-frontend.result }} |" >> $GITHUB_STEP_SUMMARY
