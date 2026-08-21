@@ -68,6 +68,11 @@ jobs:
           tar -xzf /tmp/aliyun-cli.tgz -C /usr/local/bin
           aliyun version
 
+      - name: Install FC plugin
+        run: |
+          aliyun plugin install --names aliyun-cli-fc
+          aliyun fc --help | head -5
+
       - name: Configure credentials
         run: |
           aliyun configure set \
