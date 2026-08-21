@@ -78,14 +78,14 @@ jobs:
 
       - name: Deploy to FC — UpdateFunctionCode
         run: |
-          aliyun fc UpdateFunctionCode \
+          aliyun fc update-function \
             --region ${{ env.FC_REGION }} \
             --functionName ${{ env.FC_FUNCTION_NAME }} \
-            --zipFile "$(base64 -w0 ../dist/fc-package.zip)"
+            --code "{\"zipFile\": \"$(base64 -w0 ../dist/fc-package.zip)\"}"
 
       - name: Deploy to FC — UpdateFunctionConfiguration
         run: |
-          aliyun fc UpdateFunctionConfiguration \
+          aliyun fc update-function \
             --region ${{ env.FC_REGION }} \
             --functionName ${{ env.FC_FUNCTION_NAME }} \
             --environmentVariables '{
