@@ -29,7 +29,7 @@
    * ============================================================ */
   var API_BASE = (typeof window.__AIHOT_API_BASE__ !== "undefined")
     ? window.__AIHOT_API_BASE__
-    : "";  // 默认 "" = 同源（ESA 回源代理模式）
+    : "https://aihot-server-dvodfydboq.cn-hangzhou.fcapp.run";  // 直连 FC 函数
   var API = API_BASE + "/api/proxy";
 
   /* ---------- 分类映射（slug ↔ 中文/英文 kicker） ----------
