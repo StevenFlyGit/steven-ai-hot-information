@@ -9,6 +9,7 @@ on:
     paths:
       - "server/**"
       - "web/**"
+      - "esa.jsonc"
       - ".github/workflows/deploy.yml"
   workflow_dispatch: # 支持手动触发
 
@@ -31,11 +32,6 @@ jobs:
     name: Deploy Backend → FC
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    if: >-
-      github.event_name == 'workflow_dispatch' ||
-      contains(join(github.event.head_commit.modified, ' '), 'server/') ||
-      contains(join(github.event.head_commit.added, ' '), 'server/') ||
-      contains(join(github.event.head_commit.modified, ' '), '.github/workflows/')
     defaults:
       run:
         working-directory: server
@@ -111,11 +107,6 @@ jobs:
     name: Deploy Frontend → ESA Pages
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    if: >-
-      github.event_name == 'workflow_dispatch' ||
-      contains(join(github.event.head_commit.modified, ' '), 'web/') ||
-      contains(join(github.event.head_commit.added, ' '), 'web/') ||
-      contains(join(github.event.head_commit.modified, ' '), '.github/workflows/')
     env:
       ESA_ACCESS_KEY_ID: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_ID }}
       ESA_ACCESS_KEY_SECRET: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_SECRET }}
