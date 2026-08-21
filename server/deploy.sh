@@ -55,4 +55,37 @@ else
     }'
 
   echo "Function created successfully."
+
+  # 创建 HTTP 触发器（匿名访问，支持 GET/HEAD）
+  echo "Creating HTTP trigger..."
+  aliyun fc create-trigger \
+    --region "${REGION}" \
+    --function-name "${FUNC_NAME}" \
+    --trigger-name http-trigger \
+    --trigger-type http \
+    --trigger-config '{"authType":"anonymous","methods":["GET","HEAD"]}'
+  echo "HTTP trigger created."
 fi
+
+# 确保触发器存在（函数已存在但触发器可能缺失的兜底）
+if ! aliyun fc get-trigger --region "${REGION}" --function-name "${FUNC_NAME}" --trigger-name http-trigger > /dev/null 2>&1; then
+  echo "HTTP trigger missing → creating..."
+  aliyun fc create-trigger \
+    --region "${REGION}" \
+    --function-name "${FUNC_NAME}" \
+    --trigger-name http-trigger \
+    --trigger-type http \
+    --trigger-config '{"authType":"anonymous","methods":["GET","HEAD"]}'
+  echo "HTTP trigger created."
+else
+  echo "HTTP trigger already exists."
+fi
+
+# 输出函数访问信息
+echo ""
+echo "=========================================="
+echo "FC Function: ${FUNC_NAME}"
+echo "Region:      ${REGION}"
+echo "Trigger:     http-trigger (anonymous)"
+echo "=========================================="
+echo "请在 FC 控制台查看函数 URL 并配置到前端 API_BASE"
