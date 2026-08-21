@@ -105,10 +105,10 @@ jobs:
         run: echo "FC function '${{ env.FC_FUNCTION_NAME }}' deployed successfully."
 
   # ╔═══════════════════════════════════════════════════════╗
-  # ║  Job 2 · 前端 → ESA Pages                             ║
+  #   Job 2 · 前端 → ESA Pages（esa-cli）                  ║
   # ╚═══════════════════════════════════════════════════════╝
   deploy-frontend:
-    name: Deploy Frontend → ESA
+    name: Deploy Frontend → ESA Pages
     runs-on: ubuntu-latest
     timeout-minutes: 10
     if: >-
@@ -116,6 +116,9 @@ jobs:
       contains(join(github.event.head_commit.modified, ' '), 'web/') ||
       contains(join(github.event.head_commit.added, ' '), 'web/') ||
       contains(join(github.event.head_commit.modified, ' '), '.github/workflows/')
+    env:
+      ESA_ACCESS_KEY_ID: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_ID }}
+      ESA_ACCESS_KEY_SECRET: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_SECRET }}
 
     steps:
       - name: Checkout
@@ -130,35 +133,28 @@ jobs:
           echo "Static assets validated."
           du -sh .
 
-      - name: Install Aliyun CLI
-        run: |
-          curl -sL https://aliyuncli.alicdn.com/aliyun-cli-linux-latest-amd64.tgz -o /tmp/aliyun-cli.tgz
-          tar -xzf /tmp/aliyun-cli.tgz -C /usr/local/bin
-          aliyun version
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
 
-      - name: Configure credentials
+      - name: Install ESA CLI
         run: |
-          aliyun configure set \
-            --mode AK \
-            --region cn-hangzhou \
-            --access-key-id ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_ID }} \
-            --access-key-secret ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_SECRET }}
+          npm i esa-cli@latest -g
+          esa-cli -v
 
-      - name: Package static assets
-        run: |
-          mkdir -p dist
-          zip -r dist/esa-web.zip web/
-          echo "Package size: $(du -sh dist/esa-web.zip | cut -f1)"
+      - name: Login to ESA
+        run: esa-cli login
 
-      - name: Upload to ESA Pages
+      - name: Deploy to ESA Pages
         run: |
-          aliyun esa UploadSiteResource \
-            --SiteId ${{ vars.ESA_SITE_ID }} \
-            --FilePath "$(pwd)/dist/esa-web.zip" \
-            --ResourceType static
+          esa-cli deploy \
+            --name steven-ai-hot-information \
+            --assets ./web
+          echo "ESA Pages deployed successfully."
 
       - name: Frontend deployment complete
-        run: echo "ESA Pages site '${{ vars.ESA_SITE_ID }}' deployed successfully."
+        run: echo "ESA Pages project 'steven-ai-hot-information' deployed."
 
   # ╔═══════════════════════════════════════════════════════╗
   # ║  Job 3 · 部署汇总                                     ║

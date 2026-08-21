@@ -1,0 +1,9 @@
+{
+  "name": "steven-ai-hot-information",
+  "installCommand": "",
+  "buildCommand": "",
+  "assets": {
+    "directory": "./web",
+    "notFoundStrategy": "singlePageApplication"
+  }
+}
