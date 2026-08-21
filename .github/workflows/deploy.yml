@@ -60,9 +60,9 @@ jobs:
           cp server.py aihot_client.py menu.py config.py bootstrap.py ../dist/fc-package/
           cp -r fixtures ../dist/fc-package/fixtures
           chmod +x ../dist/fc-package/bootstrap.py
-          cd ../dist
-          zip -r fc-package.zip fc-package/
-          echo "Package size: $(du -sh fc-package.zip | cut -f1)"
+          cd ../dist/fc-package
+          zip -r ../fc-package.zip .
+          echo "Package size: $(du -sh ../fc-package.zip | cut -f1)"
 
       - name: Install Aliyun CLI
         run: |
