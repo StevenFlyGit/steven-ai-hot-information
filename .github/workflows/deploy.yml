@@ -85,15 +85,15 @@ jobs:
         run: |
           aliyun fc update-function \
             --region ${{ env.FC_REGION }} \
-            --functionName ${{ env.FC_FUNCTION_NAME }} \
+            --function-name ${{ env.FC_FUNCTION_NAME }} \
             --code "{\"zipFile\": \"$(base64 -w0 ../dist/fc-package.zip)\"}"
 
       - name: Deploy to FC — UpdateFunctionConfiguration
         run: |
           aliyun fc update-function \
             --region ${{ env.FC_REGION }} \
-            --functionName ${{ env.FC_FUNCTION_NAME }} \
-            --environmentVariables '{
+            --function-name ${{ env.FC_FUNCTION_NAME }} \
+            --environment-variables '{
               "AIHOT_UPSTREAM": "${{ vars.AIHOT_UPSTREAM || 'https://aihot.virxact.com' }}",
               "AIHOT_API_PREFIX": "/api/v1",
               "AIHOT_CACHE_TTL": "300",
