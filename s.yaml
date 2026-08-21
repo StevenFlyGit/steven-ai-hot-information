@@ -12,25 +12,30 @@
 # 文档: https://docs.serverless-devs.com/user-guide/spec/
 
 edition: 3.0.0
-name: aihot-proxy
+name: aihot-server
 access: default
 
 vars:
   region: cn-hangzhou
 
 resources:
-  aihot-proxy:
+  aihot-server:
     component: fc3
     props:
       region: ${vars.region}
-      functionName: aihot-proxy
+      functionName: aihot-server
       description: "AIHOT 资讯平台 · 极薄 API 代理（ETag 缓存 + fixture 回退）"
-      runtime: python3.10
+      runtime: custom.debian10
       handler: index.main
       timeout: 60
       memorySize: 256
       instanceConcurrency: 10
       code: ./dist/fc-package
+      customRuntimeConfig:
+        command:
+          - python3
+          - bootstrap.py
+        port: 9000
       function:
         environmentVariables:
           AIHOT_UPSTREAM: "https://aihot.virxact.com"

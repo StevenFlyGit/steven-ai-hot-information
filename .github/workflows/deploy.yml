@@ -22,7 +22,7 @@ concurrency:
 
 env:
   FC_REGION: cn-hangzhou
-  FC_FUNCTION_NAME: aihot-proxy
+  FC_FUNCTION_NAME: aihot-server
 
 jobs:
   # ╔═══════════════════════════════════════════════════════╗
@@ -51,13 +51,15 @@ jobs:
           python -m py_compile aihot_client.py
           python -m py_compile menu.py
           python -m py_compile config.py
+          python -m py_compile bootstrap.py
           echo "All Python files passed syntax check."
 
       - name: Package function code
         run: |
           mkdir -p ../dist/fc-package
-          cp server.py aihot_client.py menu.py config.py ../dist/fc-package/
+          cp server.py aihot_client.py menu.py config.py bootstrap.py ../dist/fc-package/
           cp -r fixtures ../dist/fc-package/fixtures
+          chmod +x ../dist/fc-package/bootstrap.py
           cd ../dist
           zip -r fc-package.zip fc-package/
           echo "Package size: $(du -sh fc-package.zip | cut -f1)"
@@ -81,26 +83,12 @@ jobs:
             --access-key-id ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_ID }} \
             --access-key-secret ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_SECRET }}
 
-      - name: Deploy to FC — UpdateFunctionCode
+      - name: Deploy to FC (create or update)
+        env:
+          AIHOT_UPSTREAM: ${{ vars.AIHOT_UPSTREAM || 'https://aihot.virxact.com' }}
         run: |
-          aliyun fc update-function \
-            --region ${{ env.FC_REGION }} \
-            --function-name ${{ env.FC_FUNCTION_NAME }} \
-            --code "{\"zipFile\": \"$(base64 -w0 ../dist/fc-package.zip)\"}"
-
-      - name: Deploy to FC — UpdateFunctionConfiguration
-        run: |
-          aliyun fc update-function \
-            --region ${{ env.FC_REGION }} \
-            --function-name ${{ env.FC_FUNCTION_NAME }} \
-            --environment-variables '{
-              "AIHOT_UPSTREAM": "${{ vars.AIHOT_UPSTREAM || 'https://aihot.virxact.com' }}",
-              "AIHOT_API_PREFIX": "/api/v1",
-              "AIHOT_CACHE_TTL": "300",
-              "AIHOT_MIN_POLL_INTERVAL": "60",
-              "MENU_CACHE_TTL": "3600",
-              "PORT": "9000"
-            }'
+          chmod +x deploy.sh
+          bash deploy.sh
 
       - name: Backend deployment complete
         run: echo "FC function '${{ env.FC_FUNCTION_NAME }}' deployed successfully."
