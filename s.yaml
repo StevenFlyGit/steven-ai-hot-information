@@ -34,7 +34,7 @@ resources:
       customRuntimeConfig:
         command:
           - python3
-          - bootstrap.py
+          - /code/bootstrap.py
         port: 9000
       function:
         environmentVariables:

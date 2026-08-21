@@ -17,7 +17,8 @@ if aliyun fc get-function --region "${REGION}" --function-name "${FUNC_NAME}" > 
   aliyun fc update-function \
     --region "${REGION}" \
     --function-name "${FUNC_NAME}" \
-    --code "{\"zipFile\": \"${CODE_B64}\"}"
+    --code "{\"zipFile\": \"${CODE_B64}\"}" \
+    --custom-runtime-config '{"command":["python3","/code/bootstrap.py"],"port":9000}'
 
   aliyun fc update-function \
     --region "${REGION}" \
@@ -44,7 +45,7 @@ else
     --timeout 60 \
     --instance-concurrency 10 \
     --code "{\"zipFile\": \"${CODE_B64}\"}" \
-    --custom-runtime-config "{\"command\":[\"python3\",\"bootstrap.py\"],\"port\":9000}" \
+    --custom-runtime-config '{"command":["python3","/code/bootstrap.py"],"port":9000}' \
     --environment-variables '{
       "AIHOT_UPSTREAM": "'"${UPSTREAM}"'",
       "AIHOT_API_PREFIX": "/api/v1",
